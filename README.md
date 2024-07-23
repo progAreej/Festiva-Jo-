@@ -12,15 +12,6 @@ closer to everyone.
 - **Event Details:** Comprehensive details about each festival, including dates, locations, and line-ups.
 - **PayPal Booking:** Secure and convenient ticket booking through PayPal.
 
-## Team
-
-- **Areej Abu Muhfouz** - Scrum Master, Web Developer
-- **Rafah shraim** - Product Owner, Web Developer
-- **Malek Shehadeh** - Quality Assurance, Web Developer
-- **Forat Thalji** - Web Developer
-- **Duaa Khamis** - Web Developer
-- **Rami Ghazzawi** - Web Developer
-
 ## Tools Used
 
 - **Trello**
