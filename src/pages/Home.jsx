@@ -6,6 +6,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import slide1 from "../assets/img/slide-1.png"
+import slide2 from "../assets/img/image-2.png"
+import slide3 from "../assets/img/image-3.png"
+import flag from "../assets/img/joflag.png"
 
 export default function Home() {
   
@@ -44,7 +48,7 @@ export default function Home() {
   const slides = [
     {
       id: 1,
-      image: "./src/assets/img/slide-1.png",
+      image: slide1,
       title: "Welcome to the Jordan Culture Festival",
       description:
         "Experience the vibrant culture and traditions of Jordan through our exciting festival events.",
@@ -52,7 +56,7 @@ export default function Home() {
     },
     {
       id: 2,
-      image: "./src/assets/img/image-3.png",
+      image: slide2,
       title: "Get Your Tickets Now",
       description:
         "Don’t miss out on our exclusive performances, workshops, and more. Buy your tickets today!",
@@ -60,7 +64,7 @@ export default function Home() {
     },
     {
       id: 3,
-      image: "./src/assets/img/image-2.png",
+      image: slide3,
       title: "Join Us for an Unforgettable Experience",
       description:
         "Celebrate with us and immerse yourself in the rich heritage of Jordan.",
@@ -293,7 +297,7 @@ export default function Home() {
         <Slider {...sliderSettings}>
           {slides.map((slide) => (
             <div key={slide.id} className="relative rounded-xl overflow-hidden" 
-            style={{ backgroundImage: `url(${slide.imageUrl})`, height: '300px' }}
+            style={{ backgroundImage: `url(${slide.image})`, height: '300px' }}
             
             >
             <div className="relative h-3/4 overflow-hidden">
@@ -343,7 +347,7 @@ export default function Home() {
             </div>
             <div className="md:w-1/2 hover:transition">
       <img
-        src="/src/assets/img/joflag.png"
+        src={flag}
         alt="Festival Image"
         className="rounded-lg shadow-md transform transition duration-300 hover:scale-105 hover:shadow-lg"
       />
