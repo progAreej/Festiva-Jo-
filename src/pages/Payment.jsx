@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
 const CARD_OPTIONS = {
   iconStyle: "solid",
   style: {
@@ -44,6 +42,7 @@ export default function Payment() {
          {
           amount: 1000,
           id,
+          
         });
 
         if (response.data.success) {
@@ -69,7 +68,7 @@ export default function Payment() {
               <CardElement options={CARD_OPTIONS} />
             </div>
           </fieldset>
-          <button className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">
+          <button className="w-full bg-red1 text-white py-2 px-4 rounded hover:bg-red2 transition duration-200">
             Pay
           </button>
         </form>

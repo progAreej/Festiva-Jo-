@@ -357,7 +357,7 @@ export default function Footer(){
     <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
     <span className="block text-sm text-red1 sm:text-center dark:text-gray-400">
       © 2024{" "}
-      <a href="https://flowbite.com/" className="hover:underline">
+      <a href="/" className="hover:underline">
         Festiva JO™
       </a>
       . All Rights Reserved.

@@ -219,7 +219,6 @@ function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
 
   useEffect(() => {
-    // Check if user is already logged in (using session storage)
     const userId = sessionStorage.getItem('customerId');
     if (userId) {
       setIsLoggedIn(true);

@@ -57,9 +57,9 @@ video {
   height: auto;
 }
 
-button:hover {
+/* button:hover {
   background-color: #FF6969;
-}
+} */
 
 .font {
   font-family: "Edu AU VIC WA NT Hand", cursive;

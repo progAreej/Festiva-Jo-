@@ -19,28 +19,14 @@ import {
   Search,
   Edit,
   Trash2,
+  Reply,
 } from "lucide-react";
 import getData from "../hooks/getData";
 import axios from "axios";
 import deletePostData from "../hooks/deleteData";
 import updatePostData from "../hooks/updateData";
 import Switch from "../components/Switch";
-// Mock data
-const salesData = [
-  { name: "Jan", sales: 4000 },
-  { name: "Feb", sales: 3000 },
-  { name: "Mar", sales: 5000 },
-  { name: "Apr", sales: 4500 },
-  { name: "May", sales: 6000 },
-  { name: "Jun", sales: 5500 },
-];
-
-const customerActivityData = [
-  { name: "Week 1", active: 500 },
-  { name: "Week 2", active: 700 },
-  { name: "Week 3", active: 600 },
-  { name: "Week 4", active: 800 },
-];
+import ImageUpload from "../components/imageUpload";
 
 const mockEvents = [
   {
@@ -72,14 +58,38 @@ const mockCustomers = [
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [events] = getData(
-    "https://culture-2-default-rtdb.europe-west1.firebasedatabase.app/events.json"
+    "https://culture-3-default-rtdb.europe-west1.firebasedatabase.app/events.json"
   );
+
+  let Photography = events.filter(event => event.category === "Photography");
+  let Nature = events.filter(event => event.category === "Nature");
+  let food = events.filter(event => event.category === "Food");
+  let sports = events.filter(event => event.category === "Sports");
+  let wellness = events.filter(event => event.category === "Wellness");
+  // let culture = events.filter(event => event.category === "tech");
+
+  const salesData = [
+    { name: "Photography", count: Photography.length },
+    { name: "Nature", count: Nature.length },
+    { name: "food", count: food.length },
+    { name: "sports", count: sports.length },
+    { name: "wellness", count: wellness.length },
+  ];
   const [messages, setMessage] = getData(
-    "https://culture-2-default-rtdb.europe-west1.firebasedatabase.app/messages.json"
+    "https://culture-3-default-rtdb.europe-west1.firebasedatabase.app/messages.json"
   );
   let [customers] = getData(
-    "https://culture-2-default-rtdb.europe-west1.firebasedatabase.app/users/customers.json"
+    "https://culture-3-default-rtdb.europe-west1.firebasedatabase.app/users/customers.json"
   );
+  let activeCustomers = customers.filter(customer => customer.active === true);
+  let inactiveCustomers = customers.filter(
+    customer => customer.active === false
+  );
+  const customerActivityData = [
+    { name: "active", count: activeCustomers.length },
+    { name: "inactive", count: inactiveCustomers.length },
+  ];
+
   const [newEventName, setNewEventName] = useState("");
   const [id, setId] = useState("");
 
@@ -104,7 +114,7 @@ const Admin = () => {
     };
     try {
       const response = await axios.post(
-        "https://culture-2-default-rtdb.europe-west1.firebasedatabase.app/events.json",
+        "https://culture-3-default-rtdb.europe-west1.firebasedatabase.app/events.json",
         newEvent
       );
       if (response.status === 200) {
@@ -121,12 +131,9 @@ const Admin = () => {
   const [updateData, updateEvent] = updatePostData();
 
   const showUpdateForm = id => {
-   
     setshowUpdateEventForm(!showUpdateEventForm);
     setId(id);
     console.log(showUpdateEventForm);
-  
-
   };
 
   const handleUpdate = (id, url, e) => {
@@ -146,7 +153,7 @@ const Admin = () => {
   };
 
   const activeToggle = (id, status) => {
-    const url = `https://culture-2-default-rtdb.europe-west1.firebasedatabase.app/users/customers/${id}.json`;
+    const url = `https://culture-3-default-rtdb.europe-west1.firebasedatabase.app/users/customers/${id}.json`;
 
     if (status) {
       postData(url, { active: false });
@@ -154,7 +161,6 @@ const Admin = () => {
       postData(url, { active: true });
     }
   };
-
 
   const [deleteData, deleteDataFun] = deletePostData();
 
@@ -171,14 +177,22 @@ const Admin = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <div className="flex gap-4 items-center text-red1">
+      <img src="./src/assets/img/Logo11.png" alt="" width="80px" />
       <h1 className="text-3xl font-bold mb-6">Event Management Dashboard</h1>
-
-      {/* Navigation */}
+      </div>
+      <br />
+      {/* <img src="./src/assets/img/Logo11.png" alt="" />
+      <h1 className="text-3xl font-bold mb-6">Event Management Dashboard</h1>
+    */}
+      
       <nav className="flex mb-6">
         <button
           onClick={() => setActiveTab("overview")}
           className={`mr-4 px-4 py-2 rounded ${
-            activeTab === "overview" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "overview"
+              ? "bg-red1 hover:bg-red2 text-white "
+              : "bg-gray-200"
           }`}
         >
           Overview
@@ -186,7 +200,9 @@ const Admin = () => {
         <button
           onClick={() => setActiveTab("events")}
           className={`mr-4 px-4 py-2 rounded ${
-            activeTab === "events" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "events"
+              ? "bg-red1 hover:bg-red2 text-white"
+              : "bg-gray-200"
           }`}
         >
           Event Management
@@ -194,15 +210,19 @@ const Admin = () => {
         <button
           onClick={() => setActiveTab("customers")}
           className={`mr-4 px-4 py-2 rounded ${
-            activeTab === "customers" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "customers"
+              ? "bg-red1 hover:bg-red2 text-white"
+              : "bg-gray-200"
           }`}
         >
-          Customer Management
+          Users Management
         </button>
         <button
           onClick={() => setActiveTab("inventory")}
           className={`px-4 py-2 rounded ${
-            activeTab === "inventory" ? "bg-blue-500 text-white" : "bg-gray-200"
+            activeTab === "inventory"
+              ? "bg-red1 hover:bg-red2 text-white"
+              : "bg-gray-200"
           }`}
         >
           Messages
@@ -215,22 +235,22 @@ const Admin = () => {
           <div>
             <h2 className="text-xl font-semibold mb-4">Overview</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-blue-100 p-4 rounded">
+              <div className="bg-red2 p-4 rounded">
                 <h3 className="font-semibold">Total Sales</h3>
-                <p className="text-2xl">$24,500</p>
+                <p className="text-2xl">$250</p>
               </div>
-              <div className="bg-green-100 p-4 rounded">
-                <h3 className="font-semibold">Active Customers</h3>
-                <p className="text-2xl">1,234</p>
+              <div className="bg-page1 p-4 rounded text-white">
+                <h3 className="font-semibold">Active users</h3>
+                <p className="text-2xl">{activeCustomers.length}</p>
               </div>
-              <div className="bg-yellow-100 p-4 rounded">
+              <div className="bg-red1 p-4 rounded">
                 <h3 className="font-semibold">Upcoming Events</h3>
-                <p className="text-2xl">{events.length}</p>
+                <p className="text-2xl">3</p>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h3 className="font-semibold mb-2">Monthly Sales</h3>
+                <h3 className="font-semibold mb-2">Categories</h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={salesData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -238,21 +258,21 @@ const Admin = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="sales" fill="#8884d8" />
+                    <Bar dataKey="count" fill="#ff8e7a" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
               <div>
-                <h3 className="font-semibold mb-2">Customer Activity</h3>
+                <h3 className="font-semibold mb-2">Users Activity</h3>
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={customerActivityData}>
+                  <BarChart data={customerActivityData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="active" stroke="#82ca9d" />
-                  </LineChart>
+                    <Bar dataKey="count" fill="#ff8e7a" />
+                  </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
@@ -264,9 +284,8 @@ const Admin = () => {
             <h2 className="text-xl font-semibold mb-4">Event Management</h2>
             <button
               onClick={() => setShowAddEventForm(!showAddEventForm)}
-              className="bg-green-500 text-white px-4 py-2 rounded flex items-center mb-4"
+              className="bg-red1 text-white px-4 py-2 rounded flex items-center mb-4"
             >
-              <PlusCircle className="mr-2" />
               {showAddEventForm ? "Cancel" : "Add New Event"}
             </button>
 
@@ -291,7 +310,6 @@ const Admin = () => {
                   <input
                     type="number"
                     placeholder="Available Tickets"
-                  
                     onChange={e => setNewEventTickets(e.target.value)}
                     className="border p-2 rounded"
                     required
@@ -304,18 +322,12 @@ const Admin = () => {
                     className="border p-2 rounded"
                     required
                   />
-                  <input
-                    type="url"
-                    placeholder="image"
-                    value={newImage}
-                    onChange={e => setNewImage(e.target.value)}
-                    className="border p-2 rounded"
-                    required
-                  />
+
+                  <ImageUpload onUpload={setNewImage} />
                 </div>
                 <button
                   type="submit"
-                  className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+                  className="mt-2 bg-red1 text-white px-4 py-2 rounded"
                 >
                   Add Event
                 </button>
@@ -327,7 +339,7 @@ const Admin = () => {
                 onSubmit={e =>
                   handleUpdate(
                     id,
-                    "https://culture-2-default-rtdb.europe-west1.firebasedatabase.app/events",
+                    "https://culture-3-default-rtdb.europe-west1.firebasedatabase.app/events",
                     e
                   )
                 }
@@ -395,7 +407,7 @@ const Admin = () => {
               </thead>
               <tbody>
                 {events.map(event => (
-                  <tr key={event.id} className="border-b">
+                  <tr key={event.id} className="border-b even:bg-page">
                     <td className="p-2">{event.title}</td>
                     <td className="p-2">{event.date}</td>
                     <td className="p-2">{event.description}</td>
@@ -410,17 +422,14 @@ const Admin = () => {
                       <button className="mr-2 text-blue-500">
                         <Edit
                           size={18}
-                          onClick={() =>
-                          
-                            showUpdateForm(event.key)
-                          }
+                          onClick={() => showUpdateForm(event.key)}
                         />
                       </button>
                       <button
                         onClick={() =>
                           handleDeleteEvent(
                             event.key,
-                            `https://culture-2-default-rtdb.europe-west1.firebasedatabase.app/events/`
+                            `https://culture-3-default-rtdb.europe-west1.firebasedatabase.app/events/`
                           )
                         }
                         className="text-red-500"
@@ -434,19 +443,18 @@ const Admin = () => {
             </table>
           </div>
         )}
-
         {activeTab === "customers" && (
           <div>
-            <h2 className="text-xl font-semibold mb-4">Customer Management</h2>
+            <h2 className="text-xl font-semibold mb-4">Users Management</h2>
             <div className="flex items-center mb-4">
               <Users className="mr-2" />
-              <span>Total Customers: {customers.length}</span>
+              <span>Total users: {customers.length}</span>
             </div>
             <div className="mb-4">
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search customers..."
+                  placeholder="Search users..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   className="w-full border p-2 pl-10 rounded"
@@ -462,16 +470,16 @@ const Admin = () => {
                 <tr className="bg-gray-100">
                   <th className="p-2 text-left">Name</th>
                   <th className="p-2 text-left">Email</th>
-                  <th className="p-2 text-left">Total Purchases</th>
+
                   <th className="p-2 text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredCustomers.map((customer, index) => (
-                  <tr key={customer.id} className="border-b">
+                  <tr key={customer.id} className="border-b even:bg-page">
                     <td className="p-2">{customer.name}</td>
                     <td className="p-2">{customer.email}</td>
-                    <td className="p-2">{customer.totalPurchases}</td>
+
                     <td className="p-2 grid grid-cols-[30px_40px_50px] gap-6">
                       <h1
                         className={`${
@@ -489,17 +497,17 @@ const Admin = () => {
                           }
                         />
                       </button>
-                      <button className="text-red-500">
+                      {/* <button className="text-red-500">
                         <Trash2
                           size={18}
                           onClick={() =>
                             handleDeleteEvent(
                               customer.key,
-                              "https://culture-2-default-rtdb.europe-west1.firebasedatabase.app/users/customers"
+                              "https://culture-3-default-rtdb.europe-west1.firebasedatabase.app/users/customers"
                             )
                           }
                         />
-                      </button>
+                      </button> */}
                     </td>
                   </tr>
                 ))}
@@ -511,11 +519,9 @@ const Admin = () => {
         {activeTab === "inventory" && (
           <div>
             <h2 className="text-xl font-semibold mb-4">Message</h2>
-            <div className="flex items-center mb-4">
-            
-            </div>
-        
-            <table className="w-full mt-4">
+            <div className="flex items-center mb-4"></div>
+
+            <table className="w-full mt-4 ">
               <thead>
                 <tr className="bg-gray-100">
                   <th className="p-2 text-left">Name</th>
@@ -526,12 +532,21 @@ const Admin = () => {
               </thead>
               <tbody>
                 {messages.map(message => (
-                  <tr key={message.id} className="border-b">
+                  <tr key={message.id} className="border-b even:bg-page ">
                     <td className="p-2">{message.name}</td>
-                    <td className="p-2">
-                      <a href={"mailto:" + message.email}>{message.email}</a>
-                    </td>
                     <td className="p-2">{message.message}</td>
+                    <td>{message.email}</td>
+                    <td className="p-2">
+                      <button className="bg-red1 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center">
+                        <a
+                          href={"mailto:" + message.email}
+                          className="flex items-center"
+                        >
+                          Reply
+                          <Reply className="ml-2" />
+                        </a>
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

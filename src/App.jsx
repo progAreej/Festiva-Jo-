@@ -9,19 +9,24 @@ import Profile from "./pages/Profile";
 import Catalog from "./pages/Catalog";
 import Admin from "./pages/Admin";
 import Details from "./pages/Details";
-// import Footer from "./components/Footer";
-// import NavBar from "./components/NavBar";
-// import { useState } from "react";
 import CheckOut from "./pages/checkout";
 import BookingConfirmed from "./pages/Booking";
 import LogInAdmin from "./pages/LoginAdmin";
-
+import ResetPassword from "./pages/ResetPassword";
+// import DetailsPage from "./pages/DetailsPage";
+// import festivalData from './festivalData';
+// import festivalData from './festivalData';
+import DetailsPage from "./pages/DetailsPage";
 function App() {
  
   return (
     <>
       <BrowserRouter>
         <Routes>
+        <Route path="/festivals/:id" element={<DetailsPage />} />
+
+        {/* <Route path="/" element={<Home festivalData={festivalData} />} /> */}
+        {/* <Route path="/festivals/:id" element={<DetailsPage festivalData={festivalData} />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="SignUp" element={<SignUp />} />
           <Route path="LogIn" element={<LogIn />} />
@@ -36,6 +41,7 @@ function App() {
           <Route path="checkout" element={<CheckOut />} />
           <Route path="LogInAdmin" element={<LogInAdmin/>} />
           <Route path="/details/:eventId" element={<Details />} />
+          <Route path="ResetPassword" element={<ResetPassword/>} />
         </Routes>
       </BrowserRouter>
     </>
